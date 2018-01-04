@@ -5,6 +5,8 @@ LABEL maintainer "Pedro Pereira <pedrogoncalvesp.95@gmail.com>"
 # Add scripts
 COPY dl_files.sh bootstrap.sh ./
 
+RUN chmod +x bootstrap.sh && chmod +x dl_files.sh
+
 # Installation
 RUN apk add --update \
 	&& apk add --no-cache clamav clamav-libunrar curl bash tini \
@@ -15,10 +17,10 @@ RUN apk add --update \
 	&& chmod 750 /run/clamav \
 	&& sed -i '/Foreground yes/s/^#//g' /etc/clamav/clamd.conf \
 	&& sed -i '/TCPSocket 3310/s/^#//g' /etc/clamav/clamd.conf \
-  && sed -i 's#LogFile /var/log/clamav/clamd.log#LogFile /tmp/logpipe_clamd#g' /etc/clamav/clamd.conf \
+  	&& sed -i 's#LogFile /var/log/clamav/clamd.log#LogFile /tmp/logpipe_clamd#g' /etc/clamav/clamd.conf \
 	&& sed -i 's/#PhishingSignatures yes/PhishingSignatures no/g' /etc/clamav/clamd.conf \
 	&& sed -i 's/#PhishingScanURLs yes/PhishingScanURLs no/g' /etc/clamav/clamd.conf \
-  && sed -i 's#UpdateLogFile /var/log/clamav/freshclam.log#UpdateLogFile /tmp/logpipe_freshclam#g' /etc/clamav/freshclam.conf \
+  	&& sed -i 's#UpdateLogFile /var/log/clamav/freshclam.log#UpdateLogFile /tmp/logpipe_freshclam#g' /etc/clamav/freshclam.conf \
 	&& sed -i '/Foreground yes/s/^#//g' /etc/clamav/freshclam.conf
 
 # Port provision
