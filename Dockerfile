@@ -5,8 +5,6 @@ LABEL maintainer "Pedro Pereira <pedrogoncalvesp.95@gmail.com>"
 # Add scripts
 COPY dl_files.sh bootstrap.sh ./
 
-RUN chmod +x bootstrap.sh && chmod +x dl_files.sh
-
 # Installation
 RUN apk add --update \
 	&& apk add --no-cache clamav clamav-libunrar curl bash tini \
@@ -22,6 +20,8 @@ RUN apk add --update \
 	&& sed -i 's/#PhishingScanURLs yes/PhishingScanURLs no/g' /etc/clamav/clamd.conf \
   	&& sed -i 's#UpdateLogFile /var/log/clamav/freshclam.log#UpdateLogFile /tmp/logpipe_freshclam#g' /etc/clamav/freshclam.conf \
 	&& sed -i '/Foreground yes/s/^#//g' /etc/clamav/freshclam.conf
+
+RUN chmod +x /bootstrap.sh /dl_files.sh
 
 # Port provision
 EXPOSE 3310
